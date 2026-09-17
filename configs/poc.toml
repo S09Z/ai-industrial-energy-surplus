@@ -1,0 +1,72 @@
+schema_version = "1"
+
+[dataset]
+source = "bdg2"
+meter = "electricity"
+customer_count = 20
+selection = "development_only_single_site"
+meter_energy_unit = "kWh"
+minimum_completeness = 0.95
+development_start = 2016-01-01
+calibration_start = 2017-07-01
+holdout_start = 2017-10-01
+holdout_end_exclusive = 2018-01-01
+
+[forecast]
+delivery = "next_local_day"
+interval_minutes = 60
+issue_time_local = 12:00:00
+# Demonstration clock only. Phase 1 must select and use the source site's timezone.
+timezone = "Asia/Bangkok"
+baseline = "seasonal_naive_weekly"
+candidate = "lightgbm"
+quantiles = [0.1, 0.5, 0.9]
+weather_mode = "disabled"
+feature_schema_version = "issue-time-v1"
+
+[supply]
+provenance = "synthetic"
+deliverable_generation = {value = 40.0, unit = "MW"}
+committed_grid_import = {value = 60.0, unit = "MW"}
+grid_import_limit = {value = 80.0, unit = "MW"}
+export_limit = {value = 0.0, unit = "MW"}
+transformer_limit = {value = 100.0, unit = "MW"}
+
+[risk]
+demand_quantile = 0.9
+operational_reserve = {value = 3.0, unit = "MW"}
+freshness_limit_hours = 2.0
+policy_version = "risk-demo-v1"
+
+[commercial]
+policy_version = "commercial-demo-v1"
+external_export = "disabled"
+internal_reallocation = "unknown"
+execution = "disabled"
+
+[[scenarios]]
+name = "normal"
+kind = "normal"
+
+[[scenarios]]
+name = "factory_shutdown"
+kind = "shutdown"
+factory_id = "factory_a"
+demand_multiplier = 0.0
+
+[[scenarios]]
+name = "production_surge"
+kind = "production_surge"
+factory_id = "factory_c"
+demand_multiplier = 1.3
+
+[[scenarios]]
+name = "supply_reduction"
+kind = "supply_reduction"
+supply_multiplier = 0.85
+
+[[scenarios]]
+name = "hot_day"
+kind = "hot_day"
+temperature_delta = {value = 5.0, unit = "degC"}
+enabled = false

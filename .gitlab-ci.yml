@@ -1,0 +1,28 @@
+image: python:3.12-slim
+
+stages:
+  - validate
+
+variables:
+  POETRY_CACHE_DIR: "$CI_PROJECT_DIR/.poetry-cache"
+  POETRY_VIRTUALENVS_IN_PROJECT: "true"
+  POETRY_NO_INTERACTION: "1"
+
+foundation:
+  stage: validate
+  before_script:
+    - pip install --no-cache-dir poetry==2.2.1
+    - poetry check --lock --strict
+    - poetry sync --with dev
+  script:
+    - poetry run ruff check .
+    - poetry run ruff format --check .
+    - poetry run pytest
+    - poetry run energy-surplus validate-config --config configs/poc.toml
+    - poetry run energy-surplus init-run --config configs/poc.toml
+    - poetry build
+  artifacts:
+    paths:
+      - runs/
+      - dist/
+    expire_in: 7 days
