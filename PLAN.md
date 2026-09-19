@@ -1,6 +1,6 @@
 # Implementation Plan
 
-All milestones are pending. Complete the acceptance evidence before marking one done. Estimate: 6–8 full-time-equivalent engineering weeks, conditional on public-data usability; real enterprise access and approvals are separate dependencies.
+Phase 0 is implemented and locally verified; the following milestones remain pending. Complete the acceptance evidence before marking one done. Estimate: 6–8 full-time-equivalent engineering weeks, conditional on public-data usability; real enterprise access and approvals are separate dependencies.
 
 | Milestone | Indicative effort | Deliverable and completion evidence |
 |---|---|---|
@@ -11,9 +11,27 @@ All milestones are pending. Complete the acceptance evidence before marking one 
 | M5 — Executive demo | Week 6 | FastAPI and dashboard, scenario suite, explanation waterfall, approval simulation, traceable KPI cards, management walkthrough. No direct execution integration. |
 | M6 — Reproducibility and review | Weeks 7–8 buffer | Containerized run, CI, failure injection, runtime measurement, untouched holdout report and go/no-go decision. Optional coherent joint scenario work only if core gates are complete. |
 
+## Phase 0 — Implementation status
+
+### Phase 0 — Project foundation
+
+**Dependency:** drafted specification. **Budget:** 2 days, within M1/M6.
+
+- [x] P0.1 Record scope and assumptions in `docs/decisions.md`: next-day hourly delivery, issue-time cutoff, timezone, proxy customers, external export disabled, and no control integration.
+- [x] P0.2 Create Python packaging and the directory structure below; add environment locking and ignore generated data, models, credentials, and local run artifacts.
+- [x] P0.3 Define typed configuration for dataset selection, forecasting, supply, risk, commercial eligibility, and scenarios; reject missing units or inconsistent limits.
+- [x] P0.4 Add a CLI entry point, structured logging, run IDs, and a run-manifest schema covering data, code, model, calibration, and policy versions.
+- [x] P0.5 Establish linting, focused test execution, and a minimal GitLab CI pipeline; document local setup.
+
+**Deliverables:** installable project skeleton, configuration schema, development instructions, initial CI.
+
+**Exit gate:** a clean environment can install the package, validate a sample configuration, and run the initial checks. No model or performance claims are required.
+
+**Evidence:** [Phase 0 verification](docs/phase-0-verification.md). Clean locked installation, 40 passing tests, Ruff lint/format checks, sample validation and manifest creation, source/wheel builds, and installed-wheel execution outside the checkout passed locally. GitLab runner execution remains unverified; the CI definition and equivalent local commands are provided.
+
 ## Proposed implementation layout
 
-Create these directories as implementation begins; this specification does not contain placeholder code or unexecuted notebooks.
+Phase 0 creates this directory structure. Future domain packages contain only package markers; notebooks and runtime data/model directories contain directory markers until their phases begin.
 
 ```text
 notebooks/               # learning narrative; imports reusable src code

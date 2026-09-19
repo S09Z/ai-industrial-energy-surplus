@@ -1,0 +1,32 @@
+[build-system]
+requires = ["poetry-core==2.2.1"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "energy-surplus"
+version = "0.1.0"
+description = "Industrial estate energy planning decision support"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = ["pydantic>=2.10,<3", "tzdata>=2025.1"]
+
+[project.scripts]
+energy-surplus = "energy_surplus.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "ruff>=0.11,<1"]
+
+[tool.poetry]
+packages = [{include = "energy_surplus", from = "src"}]
+exclude = [".venv*", ".uv-cache", ".poetry-cache", "runs", "data", "models"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
